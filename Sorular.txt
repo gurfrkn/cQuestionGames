@@ -1,6 +1,0 @@
-Istanbul'unfethi	1343	1453	1234	1455	b	
-TBMMkurulus	1920	1923	1932	1922	a	
-Cumhuriyetinkurulusu	1932	1913	1943	1923	d	
-Hangiaydayçiz	Subat	mart	aralçk	ocak	c	
-kacyasiçndasiçn	13	32	23	22	d	
-sçnavçn kac	100	89	93	94	a	
