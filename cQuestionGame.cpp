@@ -1,3 +1,5 @@
+//NOT--Oyun oyna kýsmýný çalýþtýrmadan önce programý kapatýp açmak gerekiyor,
+//eðer kapatýlýp açýlmazsa ilk oyun için kullanýcý adýný almýyor sorun olusabýlýyor.4-5 kere oyun oynanmasý tavsiye edilir
 #include <stdio.h>
 #include <conio.h>
 #include <stdlib.h>
@@ -45,7 +47,7 @@ struct database
 
 main()
 {
-	//DOSYA OKUMA KISMI : program ilk acildiginda dosyada kac soru var, onu tespite calisiyor...
+	//DOSYA OKUMA  : program ilk acildiginda dosyada kac soru var tespit eder
 	
 	int skorSayisi = skorgoster();
 	FILE *fp;//Dosya tanimlama islemi
@@ -75,10 +77,11 @@ main()
 		Menu(); // fonksiyonu cagirildi..
 		char secim =0; // menu secim
 		char devamEt = 'e'; 
-		secim = getch();
+			secim = getch();
 		
 		if(secim == '1')  //SORU EKLE
 		{
+			
 			while(devamEt == 'e' || devamEt == 'E')
 			{
 				SoruEkle();
@@ -90,8 +93,7 @@ main()
 		else if (secim == '2')  //GORUNTULE
 		{
 			goruntulemeEkrani();
-			printf(R_MAVI"\n==> Menuye donmek icin herhangi bir tusa basiniz!\n"R_REST);
-			getch();
+			
 		}
 		else if (secim == '3') //GUNCELLE
 		{
@@ -99,7 +101,7 @@ main()
 			{
 				Guncelle();
 				DosyaYaz();
-				printf("\n"R_MAVI"Guncellemeye islemine devam edecek misiniz? [E/H]\n"R_REST);
+				printf("\n\n\t"R_MAVI"Guncellemeye islemine devam edecek misiniz? [E/H]\n"R_REST);
 				devamEt = getch();
 			}
 		}
@@ -113,16 +115,13 @@ main()
 		{
 			while(devamEt == 'e' || devamEt == 'E')
 			{
-				if (N>5)
-				{
+				if (N>=5){
 					oyun();
 					printf("\n\n  ==> Oynamaya Devam Etmek istiyor musunuz?"R_SARI" [E/H] \n"R_REST);
 					devamEt = getch();
-				}
-				else
-				{
-					printf("\t"R_SARI"Oynamak icin en az 5 Soru eklenmis olmalidir!"R_REST"");
-					Sleep(3000);
+				}else{
+					printf("\t"R_SARI"\n\t\tOYNAMAK ICIN EN AZ 5 SORU EKLENMIS OLMALIDIR!"R_REST"");
+					Sleep(2700);
 					main();
 				}
 			}
@@ -140,16 +139,19 @@ main()
 			printf("\n\n\t\t\tMenuye donmek icin bir tusa basiniz.");
 			getch();
 		}
+		
 		else if (secim == '7')  //ÇIKIÞ
 		{
-			printf(R_SARI"\n\n                                  Oyun Kapatiliyor"R_REST);
-			Sleep(800); printf("."); Sleep(800); printf("."); Sleep(800); printf(".");
-			Sleep(250); printf(R_MAVI"\n                      Cikmak icin herhangi bir tusa basiniz!"R_REST);
+			system("CLS");
+			printf(R_SARI"\n\n\n\n\n\n\n                                  Oyun Kapatiliyor"R_REST);
+			Sleep(600); printf("."); Sleep(600); printf("."); Sleep(600); printf(".");
+			Sleep(250); printf(R_MAVI"\n\n\n                         Cikmak icin herhangi bir tusa basiniz!"R_REST);
 			cikis = 'e';
 		}
 		else //BASKA BIR TUSA BASILIRSA
 		{
 			printf(R_KRMZ"\n\n                                   Lutfen menudeki seceneklerden birini seciniz!"R_REST);Sleep(650);
+			
 		}
 	}
 }
@@ -199,7 +201,7 @@ void SoruEkle()
 	
 	printf(R_SARI"\n  DOGRU CEVAP:"R_REST);
 	gets(data[N].dogru);
-	
+	printf(R_SARI"\n\t\t Sorunuz Basariyla Eklendi.\n"R_REST);
 	N++;
 	
 }
@@ -233,6 +235,7 @@ void Listele(int sayac)  // GORUNTULEME ISLEMi YAPAN FONKSÝYON
 	printf("D-Secenegi : %s\n",data[sayac].secd);
 	printf("DOGRU CEVAP: %s\n",data[sayac].dogru);
 	
+	
 }
 void SadeceSoru(int sayac)//görüntüleme ekranýnda sadece soru görüntülenmesini saðlar
 {
@@ -258,15 +261,31 @@ void goruntulemeEkrani()
 		secim = getch();
 		if(secim == 'e' || secim == 'E')
 		{
+			start:
 			printf("\n\n                          ==> Soru Ekleme Ekrani aciliyor");
-			Sleep(750); printf("."); Sleep(500); printf("."); Sleep(500); printf(".");Sleep(750);
+			Sleep(750); printf("."); Sleep(100); printf("."); Sleep(200); printf(".");Sleep(300);
 			SoruEkle();
+			DosyaYaz();
+			printf("\n\t"R_MAVI"Soru eklemeye devam edecek misiniz? [E/H]\n"R_REST);
+			secim = getch();
+			if(secim == 'e' || secim == 'E')
+				goto start;
+			else{
+				system("CLS");
+				Menu();}
 		}
+		else{
+			printf(R_MAVI"\n\n\n\t\t==> Menuye donmek icin herhangi bir tusa basiniz!\n"R_REST);
+			getch();}
+		
 	}
+	
 	else
 	{
 		for(int i = 0; i < N; i++)
-		SadeceSoru(i);	
+		SadeceSoru(i);
+		printf(R_MAVI"\n\n\n\t\t==> Menuye donmek icin herhangi bir tusa basiniz!\n"R_REST);
+		getch();	
 	}
 }
 void Guncelle()
@@ -284,9 +303,8 @@ void Guncelle()
 	}
 	else
 	{
-		for (int i = 0; i < N; i++)
-		{
-		SadeceSoru(i); // TUM SORULARI EKRANA YAZDIRIR.
+		for (int i = 0; i < N; i++){
+		Listele(i); // TUM SORULARI EKRANA YAZDIRIR.
 		}
 		printf("\n\n"R_SARI"==>"R_REST"GUNCELLEMEK istediginiz sorunun "R_SARI"NUMARASINI"R_REST" giriniz: ");
 		scanf("%d",&noGuncellenen);
@@ -299,8 +317,7 @@ void Guncelle()
 		
 		
 		printf(R_MAVI"\n  1-"R_REST"SORU METNi: \n ");
-		printf(R_MAVI"\n  2-"R_REST"SECENEKLER: \n ");
-		printf(R_MAVI"\n  3-"R_REST"DOGRU CEVAP: \n ");
+		printf(R_MAVI"\n  2-"R_REST"SECENEKLER VE DOGRU CEVAP: \n ");
 		printf("\n\n\t");
 		scanf("%d" ,&secenek);//Guncellenecek istek alinir.
 		
@@ -319,12 +336,10 @@ void Guncelle()
 			scanf("%s",data[noGuncellenen].secc);
 			printf("\n       Yeni  D-Secenegi = ");  
 			scanf("%s",data[noGuncellenen].secd);
-		}
-		else if (secenek == 3)
-		{
-			printf("\n        YENi DOGRU CEVAP = ");  
+			printf("\n       Yeni  Dogru Cevap = ");
 			scanf("%s",data[noGuncellenen].dogru);
 		}
+		
 	}	
 }
 void SoruSil()
@@ -338,44 +353,45 @@ void SoruSil()
 	int noSilinen = 0;
 	char kontrol;
 	int sec;//Silinenecek bilginin numarasi
-	if(N == 0)
+if(N == 0)
+{
+	printf(R_KRMZ"\n      UYARI! Suan Hicbir soru ekli degil. "R_REST);
+	Sleep(2000);
+}
+else
+{
+		
+	for (int i = 0; i < N; i++)
 	{
-		printf(R_KRMZ"\n      UYARI! Suan Hicbir soru ekli degil. "R_REST);
+		Listele(i);
 	}
-	else
+	printf(R_SARI"\n----> Silmek istediginiz sorunun numarasini giriniz.  <--- "R_REST);
+	scanf("%d",&noSilinen);
+	
+	system("CLS");
+	
+	noSilinen=noSilinen - 1;
+	
+	printf(R_MAVI"     SILINECEK SORU"R_REST);
+	Listele(noSilinen);
+	printf(R_SARI"\n---> "R_MAVI"%d"R_REST" numarali soruyu silmeye" R_KRMZ" EMiN MiSiNiZ?"R_REST" [E/H]",noSilinen+1);
+	kontrol = getch();
+	
+	if (kontrol == 'e' || kontrol =='E')
 	{
+		strcpy(data[noSilinen].sorumetni, 			data[N-1].sorumetni);
+		strcpy(data[noSilinen].seca,		data[N-1].seca);
+		strcpy(data[noSilinen].secb,		data[N-1].secb);
+		strcpy(data[noSilinen].secc,		data[N-1].secc);
+		strcpy(data[noSilinen].secd,		data[N-1].secd);
+		strcpy(data[noSilinen].dogru,		data[N-1].dogru);
 		
-		for (int i = 0; i < N; i++)
-		{
-			Listele(i);
-		}
-		printf(R_SARI"\n----> Silmek istediginiz sorunun numarasini giriniz.  <--- "R_REST);
-		scanf("%d",&noSilinen);
-	
-		system("CLS");
-	
-		noSilinen=noSilinen - 1;
-	
-		printf(R_MAVI"     SILINECEK SORU"R_REST);
-		Listele(noSilinen);
-		printf(R_SARI"\n---> "R_MAVI"%d"R_REST" numarali soruyu silmeye" R_KRMZ" EMiN MiSiNiZ?"R_REST" [E/H]",noSilinen+1);
-		kontrol = getch();
-	
-		if (kontrol == 'e' || kontrol =='E')
-		{
-			strcpy(data[noSilinen].sorumetni, 			data[N-1].sorumetni);
-			strcpy(data[noSilinen].seca,		data[N-1].seca);
-			strcpy(data[noSilinen].secb,		data[N-1].secb);
-			strcpy(data[noSilinen].secc,		data[N-1].secc);
-			strcpy(data[noSilinen].secd,		data[N-1].secd);
-			strcpy(data[noSilinen].dogru,		data[N-1].dogru);
+		N--;
 		
-			N--;
-		
-			printf("\n\n\t"R_SARI"---> Islem basariyla gerceklesti..."R_REST"");
-			Sleep(1500);
-		}
+		printf("\n\n\t"R_SARI"---> Islem basariyla gerceklesti..."R_REST"");
+		Sleep(1500);
 	}
+}
 }
 
 void oyun( void )	// Oyun oyna */
@@ -391,49 +407,48 @@ void oyun( void )	// Oyun oyna */
 
 
 
-	for (m=0 ; m<5 ; m++)
-	{
-		system("cls");
-		basla:
-    	srand(time(NULL)); //rastgele sayý uretme
+for (m=0 ; m<5 ; m++)
+{
+	system("cls");
+	basla:
+    		srand(time(NULL)); //rastgele sayý uretme
     	r=rand()%N;//n soru sayýmýz
-		for (t=0 ; t<m ; t++)//ayný soru gelmemesi için
-			if(dz[t]==r)goto basla;
+	for (t=0 ; t<m ; t++)//ayný soru gelmemesi için
+		if(dz[t]==r)goto basla;
 	
-		dz[m]=r;
-		oyungoster(r);
-		printf("\n\n\t"R_MAVI"CEVABINIZ: "R_REST"\n");
-		cevap[m]=getch();
-		strcpy(&dg[m],data[r].dogru);//üretilen sayý nolu soruyu diziye aktarýyor
-		if (strcmp(&cevap[m],&dg[m])==0)//cevaplarý karþýlaþtýrýyor
-		{
+	dz[m]=r;
+	oyungoster(r);
+	printf("\n\n\t"R_MAVI"CEVABINIZ: "R_REST"\n");
+	cevap[m]=getch();
+	strcpy(&dg[m],data[r].dogru);//üretilen sayý nolu soruyu diziye aktarýyor
+	if (strcmp(&cevap[m],&dg[m])==0){//cevaplarý karþýlaþtýrýyor
 			bilinen++;//doðruysa puaný arttýrýr
-			printf("\n\n  "R_SARI"TEBRIKLER DOGRU CEVAP!"R_REST"");Sleep(900);
-		}
-		else
-		{
-			printf("\n\n\t"R_KRMZ"YANLIS CEVAP!"R_REST"");Sleep(900);
-		}	
-			printf("\n\n\n\n Yeni Soru Geliyor");printf(".");Sleep(50);printf(".");Sleep(100);printf(".");Sleep(150);printf(".");Sleep(250);
-	}
+			printf("\n\n  "R_SARI"TEBRIKLER DOGRU CEVAP!"R_REST"");Sleep(900);}
+	else{
+			printf("\n\n\t"R_KRMZ"YANLIS CEVAP!"R_REST"");Sleep(900);}	
+			printf("\n\n\n\n\t Yeni Soru Geliyor");printf(".");Sleep(50);printf(".");Sleep(100);printf(".");Sleep(150);printf(".");Sleep(250);
+}
 	
+
+
 	system("CLS");
 	printf("\n\t\t"R_SARI" Tebrikler ,"R_REST" %s\n",kullanici);
 	printf("\n\t\t"R_SARI" SKORUNUZ : "R_REST"%d\n",bilinen);
-	skorkayit(bilinen,kullanici);//skorlarý kaydetmek için caðýrýlan fonksiyon
+	skorkayit(bilinen,kullanici);//skorlarý kaydetmek için caðýrýlan fon
 	
+	
+
 }
 
 void oyungoster (int sayac) //oyun fonkun içinde geçen oyungöster fonskiyonu
 {
 	FILE *fp;
 
-  	if ((fp=fopen ("Sorular.txt", "r")) == NULL) 
-  	{
-      	printf("Veri dosyasý mevcut deðil!\n");
-      	return;
- 	}
-  	printf(R_SARI"\n=======>"R_MAVI" %d.Soru "R_SARI"<=======\n"R_REST,sayac+1);
+  if ((fp=fopen ("Sorular.txt", "r")) == NULL) {
+      printf("Veri dosyasý mevcut deðil!\n");
+      return;
+ 	 }
+  printf(R_SARI"\n=======>"R_MAVI" %d.Soru "R_SARI"<=======\n"R_REST,sayac+1);
 	printf("SORU METNi : %s\n",data[sayac].sorumetni);
 	printf("A-Secenegi : %s\n",data[sayac].seca);
 	printf("B-Secenegi : %s\n",data[sayac].secb);
@@ -441,20 +456,17 @@ void oyungoster (int sayac) //oyun fonkun içinde geçen oyungöster fonskiyonu
 	printf("D-Secenegi : %s\n",data[sayac].secd);
 	printf("Dogru Cevap : %s\n",data[sayac].dogru);
 	
-  	fclose (fp);
-}
-
-void skorkayit(int bilinen,char kullanici[])
-{
+  fclose (fp);
+ }
+ void skorkayit(int bilinen,char kullanici[]){
 	FILE *fp2;
 	fp2 = fopen("Skorlar.txt","a");
-	if(fp2 != NULL)
-	{
-		fprintf(fp2,"%d\t%s\t",bilinen,kullanici);	
+	if(fp2 != NULL){
+		fprintf(fp2,"%d\t%s\t",bilinen,kullanici);
+		
 	}
 	fclose(fp2);
 }
-
 int skorgoster()
 {
 	FILE *fp2;
@@ -476,16 +488,12 @@ int skorgoster()
 	fclose(fp2);
 	return skorsay-1;
 }	
-
 void siralama(int skorsay){//bubblesort kullanýldý
 	int k = 0;
 	int a = 0;
-	for(k=0;k<skorsay-1;k++)
-	{
-		for(a=0;a<skorsay-1;a++)
-		{
-			if(data[a].skor > data[a+1].skor)
-			{
+	for(k=0;k<skorsay-1;k++){
+		for(a=0;a<skorsay-1;a++){
+			if(data[a].skor > data[a+1].skor){
 				int temp = data[a].skor;
 				char tempisim[50] ;
 				strcpy (tempisim,data[a].ad);
